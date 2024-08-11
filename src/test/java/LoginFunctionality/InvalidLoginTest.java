@@ -22,7 +22,8 @@ public class InvalidLoginTest {
     }
 
     @Test
-    public void testInvalidLogin() {
+    public void testInvalidLogin() throws InterruptedException {
+        Thread.sleep(5000);
         homePage.setUsername("invalidUsername");
         homePage.setPassword("admin321");
         homePage.clickLogin();
