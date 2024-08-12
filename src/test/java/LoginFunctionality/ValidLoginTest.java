@@ -6,30 +6,39 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import java.time.Duration;
 
 public class ValidLoginTest {
-    WebDriver driver;
-    HomePage homePage;
+    public WebDriver driver;
+    HomePage homePage;  // Fixed the class name from "Homepage" to "HomePage"
 
     @BeforeMethod
     public void setup() {
-  
-//        ChromeOptions options = new ChromeOptions();
+        // Initialize the ChromeDriver
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+
+        // Initialize the HomePage object
         homePage = new HomePage(driver);
         homePage.visitHomepage();
     }
 
     @Test
-    public void testValidLogin() {
+    public void testValidLogin() throws InterruptedException {
+        // Set the username and password, then click login
         homePage.setUsername("Admin");
         homePage.setPassword("admin123");
         homePage.clickLogin();
+
+        // Assert that login was successful by checking if the dashboard is displayed
         Assert.assertTrue(homePage.verifyLogin(), "Login failed");
+        System.out.println("Test Passed....!");
     }
 
     @AfterMethod
     public void tearDown() {
+        // Quit the driver after the test is done
         if (driver != null) {
             driver.quit();
         }
